@@ -119,9 +119,7 @@ void hoare_quick_sort(int* arr, int begin, int end){
                         while (arr[j]>pivot) j--;
                         if (i<=j)
                         {
-                                int temp = arr[i];
-                                arr[i] = arr[j];
-                                arr[j] = temp;
+                                swap(&arr[i], &arr[j]);
                                 i++;
                                 j--;
                         }
@@ -146,33 +144,25 @@ void insertion_sort(int* arr, int size){
         }
 }
 
-int partition(int* arr, int begin, int end, int pivot_index)
+int partition(int* arr, int begin, int end)
 {
-        int pivot = arr[pivot_index];
-        do
-        {
-                while (arr[begin] < pivot) begin++;
-                while (arr[end] > pivot) end--;
-                if (begin < end && arr[begin] != arr[end])
-                {
-                        swap(&arr[begin],&arr[end]);
-                }
-                else
-                {
-                        return end;
-                }
-        } while (begin < end);
-        return end;
+        int pivot = arr[end];
+        int i = (begin -1);
+
+        for(int j = begin; j<=high-1; j++){
+          if(arr[j] <= pivot){
+            i++;
+            swap(&arr[i], &arr[j]);
+          }
+        }
+        swap(&arr[i+1], &arr[end]);
+        return (i+1);
 }
 void lomuto_quick_sort(int* arr, int begin, int end)
 {
-        if (begin < end)
-        {
-                int pivot = (begin + end) / 2;
-                int pivot_new = partition(arr, begin, end, pivot);
-                lomuto_quick_sort(arr, begin, pivot_new - 1);
-                lomuto_quick_sort(arr, pivot_new + 1, end);
-        }
+      int p = partition(arr,begin,end);
+      lomuto_quick_sort(arr,begin, p-1);
+      lomuto_quick_sort(arr, p+1, end);
 }
 
 /******************** Menu********************/
